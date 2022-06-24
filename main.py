@@ -6,6 +6,11 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+"""
+    price: float  null(None): False
+    tax: float | None = None  null(None): True
+"""
+
 
 class Item(BaseModel):
     name: str
@@ -40,7 +45,7 @@ def read_root():
 
 
 @app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
+def read_item(item_id: int, q: Union[str, None] = None):  # null(None)=true
     return {"item_id": item_id, "q": q}
 
 
