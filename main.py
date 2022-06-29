@@ -11,6 +11,8 @@ app = FastAPI()
     tax: float | None = None  null(None): True
 """
 
+TOKEN_CODE = NewType("TOKEN_CODE", str)
+
 
 class Item(BaseModel):
     name: str
@@ -30,6 +32,7 @@ class User(BaseModel):
 class ReqToken(BaseModel):
     code: str
     number: int
+    token_code: TOKEN_CODE | None = None
 
 
 external_date = {
@@ -48,8 +51,14 @@ print(user.id)
 def create_token(token: ReqToken):
     return {
         "code": token.code,
-        "number": token.number
+        "number": token.number,
+        "TOKEN_CODE": TOKEN_CODE
     }
+
+
+@app.post("/new_type_tokens")
+def new_type_token(token: ReqToken):
+    return f"{token}"
 
 
 @app.get("/items/{item_id}")
@@ -61,5 +70,3 @@ def read_item(item_id: int, q: Union[str, None] = None):  # null(None)=true
 def update_item(item_id: int, item: Item):
     return {"item_name": item.name, "item_id": item_id}
 
-
-TOKEN_TEST = NewType("TOKEN_TEST", dict[str, str])
