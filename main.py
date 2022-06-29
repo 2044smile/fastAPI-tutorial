@@ -32,7 +32,7 @@ class User(BaseModel):
 class ReqToken(BaseModel):
     code: str
     number: int
-    token_code: TOKEN_CODE | None = None
+    token_code: TOKEN_CODE
 
 
 external_date = {
@@ -43,8 +43,6 @@ external_date = {
 
 
 user = User(**external_date)
-print(user)
-print(user.id)
 
 
 @app.post("/tokens")
@@ -52,7 +50,7 @@ def create_token(token: ReqToken):
     return {
         "code": token.code,
         "number": token.number,
-        "TOKEN_CODE": TOKEN_CODE
+        "token_code": token.token_code
     }
 
 
