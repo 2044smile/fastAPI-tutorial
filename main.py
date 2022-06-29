@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, NewType
 from datetime import datetime
 
 from fastapi import FastAPI
@@ -27,6 +27,11 @@ class User(BaseModel):
     friends: list[int] = []  # [int, str] str 은 기본 내장
 
 
+class ReqToken(BaseModel):
+    code: str
+    number: int
+
+
 external_date = {
     "id": "1004",
     "signup_ts": "2022-06-24 12:00",
@@ -39,9 +44,12 @@ print(user)
 print(user.id)
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.post("/tokens")
+def create_token(token: ReqToken):
+    return {
+        "code": token.code,
+        "number": token.number
+    }
 
 
 @app.get("/items/{item_id}")
@@ -53,3 +61,5 @@ def read_item(item_id: int, q: Union[str, None] = None):  # null(None)=true
 def update_item(item_id: int, item: Item):
     return {"item_name": item.name, "item_id": item_id}
 
+
+TOKEN_TEST = NewType("TOKEN_TEST", dict[str, str])
