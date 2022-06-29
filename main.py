@@ -32,7 +32,7 @@ class User(BaseModel):
 class ReqToken(BaseModel):
     code: str
     number: int
-    token_code: TOKEN_CODE
+    token_code: TOKEN_CODE | None = None
 
 
 external_date = {
